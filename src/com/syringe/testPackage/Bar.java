@@ -14,6 +14,9 @@ public class Bar {
     @Injectable
     private Jar jar;
 
+    @Injectable
+    private Star star;
+
     public void doSomeFoo(){
         foo.sing();
         foo.yell();
@@ -24,11 +27,16 @@ public class Bar {
         jar.bright();
     }
 
+    public void doSomeStar(){
+        star.doSomeJar();
+    }
+
     public static void main(String[] args) throws Exception {
         Syringe syringe = Syringe.registerPackage("com.syringe.testPackage");
         Bar bar = syringe.getClassInstance(Bar.class);
         bar.doSomeFoo();
         bar.doSomeJar();
+        bar.doSomeStar();
     }
 
 }
