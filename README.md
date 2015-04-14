@@ -2,7 +2,7 @@
 Very lightweight dependency injection framework for Java
 
 Syringe is a very lightweight, easy to use dependency injection framework. Without comments and annotations, it is ~115 lines
-of code. In order for you class to be injectable, you need to first add the @Module annotation to you class. i.e:
+of code. In order for your class to be injectable, you need to first add the @Module annotation to your class. i.e:
 
 ```java
 @Module
