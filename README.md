@@ -41,4 +41,4 @@ Then to call SomeClass:
 SomeClass someClass = syringe.getClassInstance(SomeClass.class);
 ```
 
-This will inject all dependencies the class has. For a working example, you can checkout the testPackage in the repository.
+This will inject all dependencies the class has. A working example will be linked soon.
