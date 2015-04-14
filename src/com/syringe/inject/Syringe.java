@@ -14,6 +14,7 @@ public class Syringe {
 
     private Map<Class, List<Field>> packageContents;
     private Map<Class, Object> injectManager;
+    public static void main(String[] args){}
 
     private Syringe(Map<Class, List<Field>> packageContents){
         this.packageContents = packageContents;
