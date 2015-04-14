@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class Syringe {
 
     private Map<Class, List<Field>> packageContents;
-    private Map<Class, List<Field>> injectionMapper;
     private Map<Class, Object> injectManager;
 
     private Syringe(Map<Class, List<Field>> packageContents){
@@ -27,18 +26,17 @@ public class Syringe {
     public <T> T getClassInstance(Class<T> incomingClass) throws Exception{
         injectManager = new HashMap<>(); //sets or clears inject manager
         T instance = incomingClass.newInstance();
-        inject(instance, packageContents);
+        inject(instance);
         return instance;
     }
 
-    private void inject(Object instance, Map<Class, List<Field>> injectionMap) throws Exception{
-        injectionMapper = injectionMap;
+    private void inject(Object instance) throws Exception{
         injectRecursion(instance);
     }
 
     private void injectRecursion(Object instance) throws Exception{
-        if (instance == null || injectionMapper.get(instance.getClass()).isEmpty()) return;
-        for (Field field : injectionMapper.get(instance.getClass())){
+        if (instance == null || packageContents.get(instance.getClass()).isEmpty()) return;
+        for (Field field : packageContents.get(instance.getClass())){
             field.setAccessible(true);
             if (injectManager.get(field.getType()) != null){
                 field.set(instance, injectManager.get(field.getType()));
