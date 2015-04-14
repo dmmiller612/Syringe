@@ -6,10 +6,10 @@ import com.syringe.inject.annotations.Module;
 public class Foo {
 
     public void sing(){
-        System.out.println("FOO! FOO! FOO!");
+        System.out.println("Foo singing");
     }
 
     public void yell(){
-        System.out.println("AAAAHHHH FOOO");
+        System.out.println("Foo yelling!");
     }
 }

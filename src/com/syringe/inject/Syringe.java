@@ -14,7 +14,7 @@ public class Syringe {
 
     private Map<Class, List<Field>> packageContents;
     private Map<Class, List<Field>> injectionMapper;
-    private Map<Class, Object> injectManager = new HashMap<>();
+    private Map<Class, Object> injectManager;
 
     private Syringe(Map<Class, List<Field>> packageContents){
         this.packageContents = packageContents;
@@ -25,6 +25,7 @@ public class Syringe {
     }
 
     public <T> T getClassInstance(Class<T> incomingClass) throws Exception{
+        injectManager = new HashMap<>(); //sets or clears inject manager
         T instance = incomingClass.newInstance();
         inject(instance, packageContents);
         return instance;
@@ -38,11 +39,10 @@ public class Syringe {
     private void injectRecursion(Object instance) throws Exception{
         if (instance == null || injectionMapper.get(instance.getClass()).isEmpty()) return;
         for (Field field : injectionMapper.get(instance.getClass())){
+            field.setAccessible(true);
             if (injectManager.get(field.getType()) != null){
-                field.setAccessible(true);
                 field.set(instance, injectManager.get(field.getType()));
             } else {
-                field.setAccessible(true);
                 Object newInstance = field.getType().newInstance();
                 field.set(instance, newInstance);
                 injectManager.put(field.getType(), newInstance);
@@ -58,8 +58,7 @@ public class Syringe {
     }
 
     private static List<Class> findAnnotatedClasses(List<Class> classes){
-        return classes.stream()
-                .filter(clazz -> clazz != null && clazz.getDeclaredAnnotation(Module.class) != null)
+        return classes.stream().filter(clazz -> clazz != null && clazz.getDeclaredAnnotation(Module.class) != null)
                 .collect(Collectors.toList());
     }
 
@@ -69,18 +68,14 @@ public class Syringe {
             List<Field> tempFields = Arrays.asList(clazz.getDeclaredFields()).stream()
                     .filter(field -> field.isAnnotationPresent(Injectable.class) && annotatedClasses.contains(field.getType()))
                     .collect(Collectors.toList());
-
             injectMapper.put(clazz, tempFields);
         }
         return injectMapper;
     }
 
-    private static List<Class> getClasses(String packageName)
-            throws ClassNotFoundException, IOException, Exception {
+    private static List<Class> getClasses(String packageName) throws ClassNotFoundException, IOException, Exception {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if (classLoader == null){
-            throw new ClassNotFoundException("Class isn't found");
-        }
+        if (classLoader == null) throw new ClassNotFoundException("Class isn't found");
         //replaces the packagePath with slashes
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);

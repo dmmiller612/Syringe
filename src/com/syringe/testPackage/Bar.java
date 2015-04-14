@@ -29,6 +29,7 @@ public class Bar {
 
     public void doSomeStar(){
         star.doSomeJar();
+        star.doSomeBarJar();
     }
 
     public static void main(String[] args) throws Exception {
@@ -37,6 +38,10 @@ public class Bar {
         bar.doSomeFoo();
         bar.doSomeJar();
         bar.doSomeStar();
+
+        Jar jar = syringe.getClassInstance(Jar.class);
+        jar.ball();
+        jar.bright();
     }
 
 }

@@ -15,7 +15,7 @@ public class Jar {
     }
 
     public void bright(){
-        System.out.println("Let's here from star");
+        System.out.println("Right before star");
         star.shine();
     }
 }

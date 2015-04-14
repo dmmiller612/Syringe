@@ -9,12 +9,20 @@ public class Star {
     @Injectable
     private Jar jar;
 
+    @Injectable
+    private Bar bar;
+
     public void shine(){
-        System.out.println("I am a star that shines so bright!");
+        System.out.println("A shining star");
     }
 
     public void doSomeJar(){
-        System.out.println("I am skeptical");
+        System.out.println("Right before jar (circular dependency");
         jar.ball();
+    }
+
+    public void doSomeBarJar(){
+        System.out.println("More circular dependencies");
+        bar.doSomeJar();
     }
 }
